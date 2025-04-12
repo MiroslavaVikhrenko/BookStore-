@@ -15,5 +15,10 @@ namespace BookStore.Models
         public byte Stars { get; set; }
         public int BookId { get; set; } // foreign key
         public Book Book { get; set; } // nav prop
+
+        public override string ToString()
+        {
+            return String.Format("User Name - {0}\nUser Email - {1}\nComment - {2}\nStars - {3}", UserName, UserEmail, Comment, Stars );
+        }
     }
 }

@@ -18,9 +18,9 @@ namespace BookStore.Models
         public Promotion? Promotion { get; set; } // nav prop
         public Category Category { get; set; } // nav prop
 
-        //public override string ToString()
-        //{
-        //    return String.Format("Title - {0}\nDescription - {1}\nCategory - {2}\nPrice - {3}", Title, Description, Category, Price);
-        //}
+        public override string ToString()
+        {
+            return String.Format("Title - {0}\nDescription - {1}\nCategory - {2}\nPrice - {3}", Title, Description, Category, Price);
+        }
     }
 }

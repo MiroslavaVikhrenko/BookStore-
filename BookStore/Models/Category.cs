@@ -11,5 +11,10 @@ namespace BookStore.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Book> Books { get; set; } // nav prop
+
+        public override string ToString()
+        {
+            return String.Format("Name - {0}", Name);
+        }
     }
 }
