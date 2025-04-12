@@ -9,7 +9,7 @@ namespace BookStore
         {
             using (ApplicationContext db = DbContext())
             {
-
+                new DbInit().Init(DbContext());
             }
         }
     }
