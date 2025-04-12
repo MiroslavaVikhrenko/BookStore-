@@ -14,6 +14,7 @@ namespace BookStore.Models
         public decimal Price { get; set; }
         public virtual ICollection<Author> Authors { get; set; } // nav prop
         public virtual ICollection<Review> Reviews { get; set; } // nav prop
+        public Promotion? Promotion { get; set; } // nav prop
 
         //public override string ToString()
         //{
