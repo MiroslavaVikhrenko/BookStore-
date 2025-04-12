@@ -54,5 +54,13 @@ namespace BookStore.Repositories
                 return await context.Categories.FirstOrDefaultAsync(e => e.Id == id);
             }
         }
+
+        public async Task<Category> GetCategoryWithBooksAsync(int id)
+        {
+            using (ApplicationContext context = Program.DbContext())
+            {
+                return await context.Categories.Include(e => e.Books).FirstOrDefaultAsync(e => e.Id == id);
+            }
+        }
     }
 }

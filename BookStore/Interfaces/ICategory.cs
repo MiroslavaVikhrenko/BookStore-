@@ -11,6 +11,7 @@ namespace BookStore.Interfaces
     {
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
         Task<Category> GetCategoryAsync(int id);
+        Task<Category> GetCategoryWithBooksAsync(int id);
 
         Task AddCategoryAsync(Category category);
         Task EditCategoryAsync(Category category);
