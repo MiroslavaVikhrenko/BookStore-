@@ -23,6 +23,75 @@ namespace BookStore.Data
                 });
                 context.SaveChanges();
             }
+
+            if (!context.Books.Any())
+            {
+                context.Books.AddRange(new Book[]
+                {
+                    new Book
+                    {
+                        Title = "Kafka on the Shore",
+                        Description = "A surreal and philosophical journey intertwining the lives of a runaway teen and an elderly man who talks to cats, blurring the lines between reality and dreams.",
+                        Price = 50.0m,
+                        Authors = new List<Author>()
+                        {
+                            context.Authors.FirstOrDefault(e => e.Name.Equals("Haruki Murakami"))
+                        }
+                    },
+                    new Book
+                    {
+                        Title = "Kitchen",
+                        Description = "A quietly powerful story about love, loss, and healing, centered around a young woman who finds comfort in cooking after the death of her grandmother.",
+                        Price = 40.0m,
+                        Authors = new List<Author>()
+                        {
+                            context.Authors.FirstOrDefault(e => e.Name.Equals("Banana Yoshimoto"))
+                        }
+                    },
+                    new Book
+                    {
+                        Title = "Kokoro",
+                        Description = "A poignant exploration of isolation, guilt, and the changing values of Meiji-era Japan, told through the complex relationship between a young man and a mysterious older mentor.",
+                        Price = 60.0m,
+                        Authors = new List<Author>()
+                        {
+                            context.Authors.FirstOrDefault(e => e.Name.Equals("Natsume Soseki"))
+                        }
+                    },
+                    new Book
+                    {
+                        Title = "Snow Country",
+                        Description = "A hauntingly lyrical tale of a doomed love affair between a Tokyo intellectual and a provincial geisha, set against the stark beauty of Japan’s snowy mountains.",
+                        Price = 70.0m,
+                        Authors = new List<Author>()
+                        {
+                            context.Authors.FirstOrDefault(e => e.Name.Equals("Kawabata Yasunari"))
+                        }
+                    },
+                    new Book
+                    {
+                        Title = "In the Miso Soup",
+                        Description = "A chilling psychological thriller following a Tokyo nightlife guide who suspects his American client may be a dangerous killer lurking in the city’s seedy underworld.",
+                        Price = 55.0m,
+                        Authors = new List<Author>()
+                        {
+                            context.Authors.FirstOrDefault(e => e.Name.Equals("Ryu Murakami"))
+                        }
+                    },
+                    new Book
+                    {
+                        Title = "Almost Transparent Blue",
+                        Description = "A raw, hallucinatory portrayal of disaffected youth in 1970s Japan, immersed in a world of sex, drugs, and existential aimlessness.",
+                        Price = 45.0m,
+                        Authors = new List<Author>()
+                        {
+                            context.Authors.FirstOrDefault(e => e.Name.Equals("Ryu Murakami"))
+                        }
+                    }
+
+                });
+                context.SaveChanges();
+            }
         }
     }
 }
