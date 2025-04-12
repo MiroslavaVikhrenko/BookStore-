@@ -92,6 +92,54 @@ namespace BookStore.Data
                 });
                 context.SaveChanges();
             }
+
+            if (!context.Reviews.Any())
+            {
+                context.Reviews.AddRange(new Review[]
+                {
+                    new Review
+                    {
+                        UserName = "Kenji",
+                        UserEmail = "kenji@gmail.com",
+                        Comment = "Haunting and beautifully written.",
+                        Stars = 4,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Kafka on the Shore"))
+                    },
+                    new Review
+                    {
+                        UserName = "Yumi",
+                        UserEmail = "yui@gmail.com",
+                        Comment = "Couldn’t put it down.",
+                        Stars = 5,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Kafka on the Shore"))
+                    },
+                    new Review
+                    {
+                        UserName = "Naoko",
+                        UserEmail = "naoko@gmail.com",
+                        Comment = "Dark, raw, and unforgettable.",
+                        Stars = 4,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Almost Transparent Blue"))
+                    },
+                    new Review
+                    {
+                        UserName = "Makoto",
+                        UserEmail = "makoto@gmail.com",
+                        Comment = "Strange, but strangely moving.",
+                        Stars = 4,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("In the Miso Soup"))
+                    },
+                    new Review
+                    {
+                        UserName = "Taro",
+                        UserEmail = "taro@gmail.com",
+                        Comment = "Poetic and deeply human.",
+                        Stars = 5,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Kitchen"))
+                    }
+                });
+                context.SaveChanges();
+            }
         }
     }
 }
