@@ -87,19 +87,17 @@ namespace BookStore.Repositories
 
         public async Task<Book> GetBookWithAuthorsAndReviewAndCategoryAsync(int id)
         {
-            throw new NotImplementedException();
             using (ApplicationContext context = Program.DbContext())
             {
-                //return await context.Books.Include(e => e.Category).Include(e => e.Authors).Include(e => e.Reviews).FirstOrDefaultAsync(e => e.Id == id);
+                return await context.Books.Include(e => e.Category).Include(e => e.Authors).Include(e => e.Reviews).FirstOrDefaultAsync(e => e.Id == id);
             }
         }
 
         public async Task<Book> GetBookWithAuthorsAndReviewAsync(int id)
         {
-            throw new NotImplementedException();
             using (ApplicationContext context = Program.DbContext())
             {
-                //return await context.Books.Include(e => e.Authors).Include(e => e.Reviews).FirstOrDefaultAsync(e => e.Id == id);
+                return await context.Books.Include(e => e.Authors).Include(e => e.Reviews).FirstOrDefaultAsync(e => e.Id == id);
             }
         }
 
@@ -113,19 +111,17 @@ namespace BookStore.Repositories
 
         public async Task<Book> GetBookWithCategoryAndAuthorsAsync(int id)
         {
-            throw new NotImplementedException();
             using (ApplicationContext context = Program.DbContext())
             {
-                //return await context.Books.Include(e => e.Category).Include(e => e.Authors).FirstOrDefaultAsync(e => e.Id == id);
+                return await context.Books.Include(e => e.Category).Include(e => e.Authors).FirstOrDefaultAsync(e => e.Id == id);
             }
         }
 
         public async Task<Book> GetBookWithPromotionAsync(int id)
         {
-            throw new NotImplementedException();
             using (ApplicationContext context = Program.DbContext())
             {
-                //return await context.Books.Include(e => e.Promotion).FirstOrDefaultAsync(e => e.Id == id);
+                return await context.Books.Include(e => e.Promotion).FirstOrDefaultAsync(e => e.Id == id);
             }
         }
     }
