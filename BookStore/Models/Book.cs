@@ -13,5 +13,10 @@ namespace BookStore.Models
         public string Description { get; set; }
         public decimal Price { get; set; }
         public virtual ICollection<Author> Authors { get; set; } // nav prop
+
+        //public override string ToString()
+        //{
+        //    return String.Format("Title - {0}\nDescription - {1}\nCategory - {2}\nPrice - {3}", Title, Description, Category, Price);
+        //}
     }
 }
