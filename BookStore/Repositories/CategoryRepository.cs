@@ -10,48 +10,48 @@ using System.Threading.Tasks;
 
 namespace BookStore.Repositories
 {
-    public class PromotionRepository : IPromotion
+    public class CategoryRepository : ICategory
     {
-        public async Task AddPromotionAsync(Promotion promotion)
+        public async Task AddCategoryAsync(Category category)
         {
             using (ApplicationContext context = Program.DbContext())
             {
-                await context.Promotions.AddAsync(promotion);
+                await context.Categories.AddAsync(category);
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task DeletePromotionAsync(Promotion promotion)
+        public async Task DeleteCategoryAsync(Category category)
         {
             using (ApplicationContext context = Program.DbContext())
             {
-                context.Promotions.Remove(promotion);
+                context.Categories.Remove(category);
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task EditPromotionAsync(Promotion promotion)
+        public async Task EditCategoryAsync(Category category)
         {
             using (ApplicationContext context = Program.DbContext())
             {
-                context.Promotions.Update(promotion);
+                context.Categories.Update(category);
                 await context.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<Promotion>> GetAllPromotionsAsync()
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             using (ApplicationContext context = Program.DbContext())
             {
-                return await context.Promotions.ToListAsync();
+                return await context.Categories.ToListAsync();
             }
         }
 
-        public async Task<Promotion> GetPromotionAsync(int id)
+        public async Task<Category> GetCategoryAsync(int id)
         {
             using (ApplicationContext context = Program.DbContext())
             {
-                return await context.Promotions.FirstOrDefaultAsync(e => e.Id == id);
+                return await context.Categories.FirstOrDefaultAsync(e => e.Id == id);
             }
         }
     }
