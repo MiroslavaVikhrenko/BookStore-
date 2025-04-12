@@ -14,6 +14,7 @@ namespace BookStore.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options){ }
 
