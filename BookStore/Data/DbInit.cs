@@ -140,6 +140,44 @@ namespace BookStore.Data
                 });
                 context.SaveChanges();
             }
+
+            if (!context.Promotions.Any())
+            {
+                context.Promotions.AddRange(new Promotion[]
+                {
+                    new Promotion
+                    {
+                        Name = "Summer promotion",
+                        Percent = 10.0m,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Kafka on the Shore"))
+                    },
+                    new Promotion
+                    {
+                        Name = "Golden week promotion",
+                        Amount = 5.0m,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("In the Miso Soup"))
+                    },
+                    new Promotion
+                    {
+                        Name = "Member promotion",
+                        Percent = 5.0m,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Kitchen"))
+                    },
+                    new Promotion
+                    {
+                        Name = "First purchase promotion",
+                        Amount = 3.0m,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Almost Transparent Blue"))
+                    },
+                    new Promotion
+                    {
+                        Name = "Happy customer promotion",
+                        Percent = 20.0m,
+                        Book = context.Books.FirstOrDefault(e => e.Title.Equals("Snow Country"))
+                    }
+                });
+                context.SaveChanges();
+            }
         }
     }
 }
