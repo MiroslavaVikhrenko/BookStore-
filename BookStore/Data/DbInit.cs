@@ -178,6 +178,41 @@ namespace BookStore.Data
                 });
                 context.SaveChanges();
             }
+
+            if (!context.Categories.Any())
+            {
+                context.Categories.AddRange(new Category[]
+                {
+                    new Category
+                    {
+                        Name = "Dreamlike & Surreal",
+                        Books = new List<Book>()
+                        {
+                            context.Books.FirstOrDefault(e => e.Title.Equals("Kafka on the Shore")),
+                            context.Books.FirstOrDefault(e => e.Title.Equals("Almost Transparent Blue"))
+                        }
+                    },
+                    new Category
+                    {
+                        Name = "Love & Loneliness",
+                        Books = new List<Book>()
+                        {
+                            context.Books.FirstOrDefault(e => e.Title.Equals("Kitchen")),
+                            context.Books.FirstOrDefault(e => e.Title.Equals("Snow Country"))
+                        }
+                    },
+                    new Category
+                    {
+                        Name = "Psychological & Dark",
+                        Books = new List<Book>()
+                        {
+                            context.Books.FirstOrDefault(e => e.Title.Equals("Kokoro")),
+                            context.Books.FirstOrDefault(e => e.Title.Equals("In the Miso Soup"))
+                        }
+                    },
+                });
+                context.SaveChanges();
+            }
         }
     }
 }
