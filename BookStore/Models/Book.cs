@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace BookStore.Models
         public virtual ICollection<Author> Authors { get; set; } // nav prop
         public virtual ICollection<Review> Reviews { get; set; } // nav prop
         public Promotion? Promotion { get; set; } // nav prop
+        public Category Category { get; set; } // nav prop
 
         //public override string ToString()
         //{
