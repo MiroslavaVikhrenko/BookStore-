@@ -14,5 +14,10 @@ namespace BookStore.Models
         public int Quantity { get; set; }
         public Book Book { get; set; } // nav prop
         public Order Order { get; set; } // nav prop
+
+        public override string ToString()
+        {
+            return String.Format("Book - {0}, Quantuty - {1}.", Book, Quantity);
+        }
     }
 }

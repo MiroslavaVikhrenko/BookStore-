@@ -14,5 +14,10 @@ namespace BookStore.Models
         public string Address { get; set; }
         public bool Shipped { get; set; }
         public virtual ICollection<OrderLine> Lines { get; set; } // nav prop
+
+        public override string ToString()
+        {
+            return String.Format("Customer name - {0}\nCity - {1}\nAddress - {2}\nShipped - {3}.", CustomerName, City, Address, Shipped);
+        }
     }
 }
