@@ -130,6 +130,62 @@ namespace BookStore.Data
                 context.SaveChanges();
             }
 
+            if (!context.Orders.Any())
+            {
+                context.Orders.AddRange
+                    (
+                    new Order
+                    {
+                        CustomerName = "Mika",
+                        City = "Tokyo",
+                        Address = "Shinjuku",
+                        Shipped = false,
+                        Lines = new List<OrderLine>()
+                    },
+                     new Order
+                     {
+                         CustomerName = "Makoto",
+                         City = "Tokyo",
+                         Address = "Shinookubo",
+                         Shipped = false,
+                         Lines = new List<OrderLine>()
+                     }
+                    );
+                context.SaveChanges();
+            }
+
+            if (!context.OrderLines.Any())
+            {
+                context.OrderLines.AddRange
+                    (
+                    new OrderLine
+                    {
+                        BookId = 1,
+                        OrderId = 1,
+                        Quantity = 3
+                    },
+                    new OrderLine
+                    {
+                        BookId = 2,
+                        OrderId = 1,
+                        Quantity = 2
+                    },
+                     new OrderLine
+                     {
+                         BookId = 2,
+                         OrderId = 2,
+                         Quantity = 2
+                     },
+                     new OrderLine
+                     {
+                         BookId = 1,
+                         OrderId = 2,
+                         Quantity = 3
+                     }
+                    );
+                context.SaveChanges();
+            }           
+
         }
     }
 }
