@@ -7,6 +7,10 @@ namespace BookStore
 {
     public class Program
     {
+        enum ShopMenu
+        {
+            Books, Authors, Categories, Orders, SearchAuthor, SearchBooks, SearchCategories, SearchOrders, AddBook, AddAuthor, AddCategory, AddOrder, Exit
+        }
         private static IBook _books;
 
         public static ApplicationContext DbContext() => new ApplicationContextFactory().CreateDbContext();
