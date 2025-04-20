@@ -24,6 +24,16 @@ namespace BookStore.Helpers
             }
             return result;
         }
+        public static decimal GetDecimal(string value)
+        {
+            decimal result = 0;
+            Console.WriteLine("{0} {1}: ", _subMessage, value);
+            while (!decimal.TryParse(Console.ReadLine(), out result))
+            {
+                Console.Write("{0} {1}: ", _subMessage, value);
+            }
+            return result;
+        }
         public static bool GetBoolean(string value)
         {
             bool result = false;
