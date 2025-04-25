@@ -17,6 +17,7 @@ namespace BookStore
         private static IOrder _orders;
         private static IAuthor _authors;
         private static ICategory _categories;
+        private static IPromotion _promotions;
 
         public static ApplicationContext DbContext() => new ApplicationContextFactory().CreateDbContext();
         static void Initialize()
@@ -27,6 +28,7 @@ namespace BookStore
             _orders = new OrderRepository();
             _authors = new AuthorRepository();
             _categories = new CategoryRepository();
+            _promotions = new PromotionRepository();
         }
 
         // Menu()
@@ -42,25 +44,31 @@ namespace BookStore
                 switch ((ShopMenu)input)
                 {
                     case ShopMenu.Books:
+                        await ReviewBooks();
                         break;
                     case ShopMenu.Authors:
                         await ReviewAuthors();
                         break;
                     case ShopMenu.Orders:
+                        await ReviewOrders();
                         break;
                     case ShopMenu.SearchAuthor:
                         await SearchAuthors();
                         break;
                     case ShopMenu.SearchBooks:
+                        await SeacrhBooks();
                         break;
                     case ShopMenu.SearchOrders:
+                        await SearchOrders();
                         break;
                     case ShopMenu.AddBook:
+                        await AddBook();
                         break;
                     case ShopMenu.AddAuthor:
                         await AddAuthor();
                         break;
                     case ShopMenu.AddOrder:
+                        await AddOrder();
                         break;
                     case ShopMenu.Exit:
                         break;

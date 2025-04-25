@@ -374,7 +374,7 @@ namespace BookStore
             }
         }
 
-        static async Task SeacrhBook()
+        static async Task SeacrhBooks()
         {
             string bookName = InputHelper.GetString("book title");
             var currentBooks = await _books.GetBooksByNameAsync(bookName);
@@ -396,6 +396,256 @@ namespace BookStore
             else
             {
                 Console.WriteLine("No books were found by this name");
+            }
+        }
+
+        #endregion
+
+        #region Orders
+        static async Task ReviewOrders()
+        {
+            var allOrders = await _orders.GetAllOrdersAsync();
+            var orders = allOrders.Select(e => new ItemView
+            {
+                Id = e.Id,
+                Value = String.Format("{0} ({1}, {2})",
+                e.CustomerName, e.City, e.Address)
+            }).ToList();
+
+            int result = ItemHelper.MultipleChoice(true, orders, true, optionsPerLine: 1);
+            if (result != 0)
+            {
+                var currentOrder = await _orders.GetOrderWithOrderLinesAndBooksAsync(result);
+                await OrderInfo(currentOrder);
+            }
+        }
+
+        static async Task OrderInfo(Order currentOrder)
+        {
+            List<ItemView> items = new List<ItemView>
+            {
+                new ItemView {Id = 1, Value = "Browse books"},
+                new ItemView {Id = 2, Value = "Edit order"},
+                new ItemView {Id = 3, Value = "Delete order"}
+            };
+
+            if (currentOrder.Shipped == false)
+            {
+                items.Add(new ItemView { Id = 4, Value = "Close order" });
+            }
+
+            decimal totalSum = currentOrder.Lines.Sum(e => e.Book.Price);
+            decimal totalSumWithDiscounts = totalSum;
+            foreach (Book book in currentOrder.Lines.Select(e => e.Book))
+            {
+                if (book.Promotion is not null)
+                {
+                    if (book.Promotion.Percent is not null)
+                    {
+                        totalSumWithDiscounts -= book.Price * book.Promotion.Percent.Value / 100;
+                    }
+                    else
+                    {
+                        totalSumWithDiscounts -= book.Promotion.Amount ?? 0;
+                    }
+                }
+            }
+
+            int result = ItemHelper.MultipleChoice(true, items,
+                isMenu: true, message: String.Format("{0}\n\nTotal cost: {1}\nCost including discounts: {2}",
+                currentOrder, totalSum, totalSumWithDiscounts), startY: 8, optionsPerLine: 1);
+
+            switch (result)
+            {
+                case 1:
+                    {
+                        await BrowseBooks(currentOrder);
+                        break;
+                    }
+                case 2:
+                    {
+                        await EditOrder(currentOrder); 
+                        Console.ReadLine();
+                        break;
+                    }
+                case 3:
+                    {
+                        await RemoveOrder(currentOrder);
+                        Console.ReadLine();
+                        break;
+                    }
+                case 4:
+                    {
+                        await CloseOrder(currentOrder);
+                        Console.ReadLine();
+                        break;
+                    }
+            }
+        }
+
+        static async Task BrowseBooks(Order currentOrder)
+        {
+            var books = currentOrder.Lines.Select(e => new ItemView 
+            {
+                Id = e.Book.Id,
+                Value = e.Book.Title + $"(Count: {e.Quantity})"
+            }).ToList();
+            
+            if (books.Count > 0)
+            {
+                int result = ItemHelper.MultipleChoice(true, books, true, optionsPerLine: 1);
+                if (result != 0)
+                {
+                    var currentBook = await _books.GetBookWithCategoryAndAuthorsAsync(result);
+                    await BookInfo(currentBook);
+                }
+                else
+                {
+                    Console.WriteLine("This order has no added books.");
+                    Console.ReadLine();
+                }
+            }
+        }
+
+        static async Task EditOrder(Order currentOrder)
+        {
+            await _orders.UpdateOrderAsync(await CreateOrUpdateOrder(currentOrder));
+            Console.WriteLine("Order successfully changed.");
+        }
+
+        static async Task AddOrder()
+        {
+            await _orders.AddOrderAsync(await CreateOrUpdateOrder());
+            Console.WriteLine("Order successfully added");
+        }
+
+        static async Task<Order> CreateOrUpdateOrder(Order? currentOrder = null)
+        {
+            if (currentOrder is not null)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("When editing, all fields are changed");
+                Console.ResetColor();
+            }
+
+            var allBooks = await _books.GetAllBooksAsync();
+
+            string customerName = InputHelper.GetString("customer: 'Name'");
+            string customerCity = InputHelper.GetString("customer: 'City'");
+            string customerAddress = InputHelper.GetString("customer: 'Address'");
+
+            Order order = new Order
+            {
+                Id = currentOrder?.Id ?? 0,
+                CustomerName = customerName,
+                City = customerCity,
+                Address = customerAddress
+            };
+
+            // Create history of input as screen gets cleaned
+            string buffer = String.Format("Enter customer 'Name': {0}\nEnter customer 'City': {1}\nEnter customer 'Address': {2}" +
+                "\nSelected books:\n", customerName, customerCity, customerAddress);
+            var books = allBooks.Select(e => new ItemView { Id = e.Id, Value = e.Title}).ToList();
+            Dictionary<int, (string name, int count)> bufferBooks = new Dictionary<int, (string name, int count)>();
+            int bookId = -1, startY = 5;
+            while (bookId != 0)
+            {
+                bookId = ItemHelper.MultipleChoice(true, new List<ItemView>(books), true, message: buffer, startY: 10);
+                if (bookId != 0)
+                {
+                    
+                }
+
+            }
+
+            return order;
+        }
+
+        static async Task RemoveOrder(Order currentOrder)
+        {
+            int result = ItemHelper.MultipleChoice(true, new List<ItemView>
+            {
+                new ItemView {Id = 1, Value = "Yes"},
+                new ItemView {Id = 2, Value = "No" }
+            }, message: String.Format("[Are you sure you want to delete this order: {0} ?]\n", currentOrder.CustomerName), startY: 2);
+
+            if (result == 1)
+            {
+                await _orders.DeleteOrderAsync(currentOrder);
+                Console.WriteLine("The order has been successfully deleted.");
+            }
+            else
+            {
+                Console.WriteLine("Press any key to continue...");
+            }
+        }
+
+        static async Task CloseOrder(Order currentOrder)
+        {
+            int result = ItemHelper.MultipleChoice(true, new List<ItemView>
+            {
+                new ItemView {Id = 1, Value = "Yes"},
+                new ItemView {Id = 2, Value = "No" }
+            }, message: String.Format("[Has this order been delivered? \nUpdate the status for the order as 'Completed'? {0}]\n",
+            currentOrder.CustomerName), startY: 3);
+
+            if (result == 1)
+            {
+                currentOrder.Shipped = true;
+                await _orders.UpdateOrderAsync(currentOrder);
+                Console.WriteLine("The order was successfully completed.");
+            }
+            else
+            {
+                Console.WriteLine("Press any key to continue...");
+            }
+        }
+
+        static async Task SearchOrders()
+        {
+            int result = ItemHelper.MultipleChoice(true, new List<ItemView>
+            {
+                new ItemView {Id = 1, Value = "Customer 'Address'" },
+                new ItemView {Id = 2, Value = "Customer 'Name'" }
+            }, message: String.Format("Select the data for which to start searching for orders:"), startY: 2, optionsPerLine: 1, isMenu: true);
+
+            if (result == 1)
+            {
+                string address = InputHelper.GetString("Customer 'Address'");
+                var currentOrders = await _orders.GetAllOrdersByAddressAsync(address);
+                if (currentOrders.Count() > 0)
+                {
+                    await Search(currentOrders);
+                }
+                else
+                {
+                    Console.WriteLine("Orders with this address were not found");
+                }
+            }
+            else if (result == 2)
+            {
+                string name = InputHelper.GetString("Customer 'Name'");
+                var currentOrders = await _orders.GetAllOrdersByNameAsync(name);
+                if (currentOrders.Count() > 0)
+                {
+                    await Search(currentOrders);
+                }
+                else
+                {
+                    Console.WriteLine("Orders with this name were not found");
+                }
+            }
+        }
+
+        static async Task Search(IEnumerable<Order> currentOrders)
+        {
+            var orders = currentOrders.Select(e => new ItemView { Id = e.Id, Value = e.CustomerName}).ToList();
+            int result = ItemHelper.MultipleChoice(true, orders, true);
+
+            if (result != 0)
+            {
+                var currentOrder = await _orders.GetOrderWithOrderLinesAndBooksAsync(result);
+                await OrderInfo(currentOrder);
             }
         }
 
