@@ -10,7 +10,7 @@ namespace BookStore.Helpers
     public class ItemHelper
     {
         public static int MultipleChoice<T>(bool canCancel, List<T> items, bool isMenu = false,
-            string message = null, int spacingPerLine = 18, int optionsPerLine = 3,
+            string message = null, int spacingPerLine = 18, int optionsPerLine = 1,
             int startX = 1, int startY = 1)
             where T : IShow<int>, new()
         {
