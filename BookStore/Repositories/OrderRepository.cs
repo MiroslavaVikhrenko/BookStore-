@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,37 +15,60 @@ namespace BookStore.Repositories
     {
         public async  Task AddOrderAsync(Order order)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                await context.Orders.AddAsync(order);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteOrderAsync(Order order)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                context.Orders.Remove(order);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                return await context.Orders.ToListAsync();
+            }
         }
 
         public async Task<IEnumerable<Order>> GetAllOrdersByAddressAsync(string address)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                return await context.Orders.Where(e => e.Address.Contains(address)).ToListAsync();
+            }
         }
 
         public async Task<IEnumerable<Order>> GetAllOrdersByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                return await context.Orders.Where(e => e.CustomerName.Contains(name)).ToListAsync();
+            }
         }
 
         public async Task<Order> GetOrderAsync(int id)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                return await context.Orders.FirstOrDefaultAsync(e => e.Id == id);
+            }
         }
 
         public async Task<Order> GetOrderWithOrderLinesAndBooksAsync(int id)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext context = Program.DbContext())
+            {
+                return await context.Orders.Include(e => e.Lines).ThenInclude(e => e.Book).FirstOrDefaultAsync(e => e.Id == id);
+            }
         }
 
         public async Task UpdateOrderAsync(Order order)
