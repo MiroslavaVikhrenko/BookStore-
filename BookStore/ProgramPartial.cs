@@ -553,10 +553,21 @@ namespace BookStore
                 bookId = ItemHelper.MultipleChoice(true, new List<ItemView>(books), true, message: buffer, startY: 10);
                 if (bookId != 0)
                 {
-                    
+                    if (bufferBooks.ContainsKey(bookId))
+                    {
+                        bufferBooks[bookId] = (bufferBooks[bookId].name, bufferBooks[bookId].count + 1);
+                    }
+                    else
+                    {
+                        bufferBooks.Add(bookId, (name: allBooks.FirstOrDefault(e => e.Id == bookId)!.Title, count: 1));
+                    }
                 }
-
             }
+            order.Lines = bufferBooks.Select(e => new OrderLine
+            {
+                BookId = e.Key,
+                Quantity = e.Value.count,
+            }).ToList();
 
             return order;
         }
